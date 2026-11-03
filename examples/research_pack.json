@@ -1,0 +1,106 @@
+{
+  "topic": "The Fall of the Vijayanagara Empire",
+  "pack": {
+    "summary": "The Vijayanagara Empire was a major late medieval South Indian empire founded in 1336 by Harihara I and Bukka Raya I, reaching its peak under Emperor Krishnadevaraya in the early 16th century. Following Krishnadevaraya's death, internal destabilization from a chaotic civil war in 1542–1543 weakened the state, allowing noble regent Rama Raya to assume de facto control. In January 1565, an alliance of Deccan Sultanates defeated the empire at the Battle of Talikota, capturing and executing Rama Raya. Although central authority collapsed and the capital was severely damaged, remnants of the empire survived until 1646.",
+    "timeline": [
+      {
+        "date": "1336",
+        "event": "Harihara I and Bukka Raya I establish the Vijayanagara Empire in South India.",
+        "source_index": 3
+      },
+      {
+        "date": "1407",
+        "event": "Deva Raya I enters into a treaty with the Bahmani Sultanate, agreeing to pay annual tribute.",
+        "source_index": 3
+      },
+      {
+        "date": "1509–1529",
+        "event": "Emperor Krishnadevaraya rules, marking the territorial and military peak of the empire.",
+        "source_index": 3
+      },
+      {
+        "date": "June 1542",
+        "event": "Emperor Achyuta Deva Raya dies, triggering a violent succession crisis and civil war.",
+        "source_index": 3
+      },
+      {
+        "date": "1543",
+        "event": "Rama Raya defeats the usurper Salakaraju Tirumala at the Battle of the Tungabhadra and installs Sadasiva Raya as a nominal ruler.",
+        "source_index": 3
+      },
+      {
+        "date": "January 1565",
+        "event": "The allied Deccan Sultanates defeat Vijayanagara forces at the Battle of Talikota; Rama Raya is captured and executed.",
+        "source_index": 3
+      },
+      {
+        "date": "1646",
+        "event": "The Vijayanagara Empire officially comes to an end after decades of reduced authority.",
+        "source_index": 3
+      }
+    ],
+    "key_figures": [
+      {
+        "name": "Rama Raya",
+        "role": "De facto ruler and regent of the Vijayanagara Empire",
+        "significance": "He dominated imperial politics following the 1542 civil war, but his aggressive diplomacy united the rival Deccan Sultanates against him, leading to his defeat and execution at Talikota in 1565.",
+        "source_index": 3
+      },
+      {
+        "name": "Krishnadevaraya",
+        "role": "Emperor of the Tuluva Dynasty (r. 1509–1529)",
+        "significance": "He led the empire to its absolute zenith, securing major military victories over the Deccan Sultanates and Gajapatis while expanding civil infrastructure and art.",
+        "source_index": 3
+      },
+      {
+        "name": "Salakaraju Tirumala",
+        "role": "Regent and usurper during the 1542–1543 civil war",
+        "significance": "He murdered the young heir Venkata I and ruled tyrant-style, inviting foreign Bahmani intervention before being slain by Rama Raya's forces.",
+        "source_index": 3
+      },
+      {
+        "name": "Deva Raya II",
+        "role": "Sangama Dynasty Emperor (r. 1424–1446)",
+        "significance": "Known as one of the most successful Sangama rulers, he expanded the empire's reach overseas, quelled internal rebellions, and integrated Muslim archers into the military.",
+        "source_index": 3
+      }
+    ],
+    "disputed_points": [
+      "The linguistic and geographic origins of founders Harihara I and Bukka Raya I (whether they were Kannada Hoysala officers or Telugu Kakatiya commanders).",
+      "The exact cause of the 1443 conflict between Deva Raya II and the Bahmani Sultanate (Firishta claims it was caused by Deva Raya II's troop preparations, while Abdur Razzak attributes it to Bahmani aggression following an assassination attempt on the king).",
+      "The underlying reasons for Vijayanagara's technological shortcomings at Talikota (Richard Eaton attributes it to Krishnadevaraya's failure to invest in military technology after Raichur, whereas Suryanath Kamath highlights tactical disparities in artillery, cavalry, and archery).",
+      "The total size of the empire's infantry force, with official estimates citing a standing army of 100,000 while historical travelogues claim numbers ranging from 1.1 million to 2 million."
+    ],
+    "myths": [
+      {
+        "claim": "The Vijayanagara Empire completely collapsed and vanished immediately following the Battle of Talikota in 1565.",
+        "reality": "While imperial power and central authority diminished drastically after the defeat in 1565, the empire continued to exist until 1646.",
+        "source_index": 3
+      },
+      {
+        "claim": "Sage Vidyaranya's direct leadership and guidance of the empire's founding in 1336 is fully supported by contemporary records.",
+        "reality": "Literary traditions credit sage Vidyaranya with guiding the founders back to Hinduism and establishing the capital, but contemporary inscriptional evidence from 1336 supporting his direct role remains limited.",
+        "source_index": 3
+      }
+    ],
+    "video_angles": [
+      "The Treason at Talikota: How Betrayal and Technological Disparities Sunk an Empire",
+      "Puppet Kings and Tyrants: The Forgotten Civil War of 1542 That Weakened Vijayanagara",
+      "Fortress of the South: How Advanced Hydraulics and Architecture Sustained Vijayanagara's War Machine"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Society of the Vijayanagara Empire",
+      "url": "https://en.wikipedia.org/wiki/Society_of_the_Vijayanagara_Empire"
+    },
+    {
+      "title": "Nayakas of Chitradurga",
+      "url": "https://en.wikipedia.org/wiki/Nayakas_of_Chitradurga"
+    },
+    {
+      "title": "Vijayanagara Empire",
+      "url": "https://en.wikipedia.org/wiki/Vijayanagara_Empire"
+    }
+  ]
+}

@@ -26,6 +26,8 @@ Each verdict comes with the exact sentence from the source that backs it.
 
 Everything can be downloaded as Markdown for your script notes.
 
+The design is inspired by atlas maps: the timeline is drawn as a route, and fact-check verdicts as a map scale bar. Click **Show an example** to see a saved result without using any of your free requests.
+
 ## Setup (free)
 1. Install Python 3.10+.
 2. Install the libraries:
@@ -62,6 +64,8 @@ topic / script → claims → Wikipedia (+ trusted sites) → Gemini, sources on
 | `research/pack.py` | Builds the research pack |
 | `research/factcheck.py` | Splits scripts into claims, checks them and verifies quotes |
 | `research/export.py` | Markdown downloads |
+| `research/ui.py` | The atlas-style look: theme and result layouts |
+| `research/examples.py`, `examples/` | Saved example results |
 | `evals/` | Accuracy test: 37 labelled true and false claims, plus a scorer |
 | `app.py` | The Streamlit web interface |
 
