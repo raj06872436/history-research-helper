@@ -1,4 +1,4 @@
-anthropic>=1.15.0
+google-genai>=2.30
 streamlit>=1.40
 pydantic>=2.0
 requests>=2.31

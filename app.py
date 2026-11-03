@@ -1,22 +1,25 @@
-"""History Research Helper: type a video topic, get a sourced research pack.
+"""History Research Helper: build sourced research packs and fact-check video scripts.
 
 Run with:  streamlit run app.py
 """
 
-import os
-
-import anthropic
+import requests
 import streamlit as st
 from dotenv import load_dotenv
+from google.genai import errors
 
+from research.export import VERDICT_LABELS, factcheck_to_markdown, to_markdown
+from research.factcheck import FactCheckResult, fact_check
+from research.llm import has_api_key
 from research.pack import ResearchPack, build_pack
 from research.sources import Source, gather_sources
+from research.web_sources import TRUSTED_DOMAINS, search_web
 
 load_dotenv()
 
 st.set_page_config(page_title="History Research Helper", page_icon="📜", layout="wide")
 st.title("📜 History Research Helper")
-st.caption("Type a video topic. Get a timeline, key figures and myths, every fact linked to its source.")
+st.caption("Every fact linked to its source, so you can check it before you publish.")
 
 
 def cite(index: int, sources: list[Source]) -> str:
@@ -26,49 +29,36 @@ def cite(index: int, sources: list[Source]) -> str:
     return f"[{index}]"
 
 
-def to_markdown(topic: str, pack: ResearchPack, sources: list[Source]) -> str:
-    """Plain-text version of the pack, for downloading into your script notes."""
-    lines = [f"# Research pack: {topic}", "", pack.summary, "", "## Timeline"]
-    lines += [f"- **{e.date}**: {e.event} [{e.source_index}]" for e in pack.timeline]
-    lines += ["", "## Key figures"]
-    lines += [f"- **{f.name}** ({f.role}): {f.significance} [{f.source_index}]" for f in pack.key_figures]
-    if pack.disputed_points:
-        lines += ["", "## Disputed points"] + [f"- {d}" for d in pack.disputed_points]
-    if pack.myths:
-        lines += ["", "## Myths to avoid"]
-        lines += [f"- Myth: {m.claim}\n  Reality: {m.reality} [{m.source_index}]" for m in pack.myths]
-    lines += ["", "## Video angles"] + [f"- {a}" for a in pack.video_angles]
-    lines += ["", "## Sources"] + [f"{i}. {s.title}: {s.url}" for i, s in enumerate(sources, 1)]
-    return "\n".join(lines)
+def show_sources(sources: list[Source]) -> None:
+    st.subheader("📚 Sources")
+    for i, s in enumerate(sources, 1):
+        st.markdown(f"{i}. [{s.title}]({s.url})")
 
 
-with st.form("topic_form"):
-    topic = st.text_input("Video topic", placeholder="e.g. The Fall of the Vijayanagara Empire")
-    num_sources = st.slider("Number of Wikipedia articles to use", 1, 5, 3)
-    submitted = st.form_submit_button("Build research pack")
-
-if submitted and topic.strip():
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        st.error("No API key found. Copy .env.example to .env and paste your key into it.")
+def run_safely(task):
+    """Run an AI task and turn common failures into friendly messages."""
+    if not has_api_key():
+        st.error("No Gemini API key found. Copy .env.example to .env and paste your free key into it.")
         st.stop()
     try:
-        with st.spinner("Finding sources on Wikipedia..."):
-            sources = gather_sources(topic, max_articles=num_sources)
-        if not sources:
-            st.warning("No Wikipedia articles found. Try different wording.")
-            st.stop()
-        with st.spinner(f"Reading {len(sources)} articles and building your pack..."):
-            pack = build_pack(topic, sources)
-    except anthropic.AuthenticationError:
-        st.error("Your API key is missing or wrong. Put it in a file called .env (see .env.example).")
-        st.stop()
-    except anthropic.APIConnectionError:
-        st.error("Couldn't reach the AI service. Check your internet connection.")
-        st.stop()
+        return task()
+    except errors.ClientError as err:
+        if err.code == 429:
+            st.error("You've hit the free tier's limit. Wait a minute (or until tomorrow for the daily limit) and try again.")
+        elif err.code in (400, 401, 403) and "key" in str(err).lower():
+            st.error("Your Gemini API key is wrong. Check the key in your .env file.")
+        else:
+            st.error(f"The AI service rejected the request: {err.message}")
+    except errors.ServerError:
+        st.error("Gemini is busy right now. Try again in a minute.")
+    except requests.ConnectionError:
+        st.error("Couldn't connect. Check your internet connection.")
     except (ValueError, RuntimeError) as err:
         st.error(str(err))
-        st.stop()
+    st.stop()
 
+
+def show_pack(topic: str, pack: ResearchPack, sources: list[Source]) -> None:
     st.subheader("Summary")
     st.write(pack.summary)
 
@@ -96,12 +86,72 @@ if submitted and topic.strip():
     for a in pack.video_angles:
         st.markdown(f"- {a}")
 
-    st.subheader("📚 Sources")
-    for i, s in enumerate(sources, 1):
-        st.markdown(f"{i}. [{s.title}]({s.url})")
-
+    show_sources(sources)
     st.download_button(
         "Download as Markdown",
         to_markdown(topic, pack, sources),
         file_name=f"research-{topic.lower().replace(' ', '-')[:40]}.md",
     )
+
+
+def show_factcheck(result: FactCheckResult) -> None:
+    counts = {v: sum(c.check.verdict == v for c in result.claims) for v in VERDICT_LABELS}
+    for col, (verdict, label) in zip(st.columns(4), VERDICT_LABELS.items()):
+        col.metric(label, counts[verdict])
+
+    for c in result.claims:
+        with st.container(border=True):
+            st.markdown(f"**{VERDICT_LABELS[c.check.verdict]}**: {c.check.claim}")
+            st.write(c.check.explanation)
+            if c.source and c.check.quote:
+                st.markdown(f"> {c.check.quote}\n\n[{c.source.title}]({c.source.url})")
+                if not c.quote_verified:
+                    st.warning("This quote could not be found word for word in the source. Check it yourself.")
+
+    show_sources(result.sources)
+    st.download_button("Download report as Markdown", factcheck_to_markdown(result), file_name="fact-check.md")
+
+
+use_web = st.toggle(
+    "Also search trusted websites",
+    help="Uses Google Search to find pages on " + ", ".join(TRUSTED_DOMAINS) + ". Slower, and uses more of your free daily limit.",
+)
+
+pack_tab, check_tab = st.tabs(["📖 Research pack", "🔍 Fact-check script"])
+
+with pack_tab:
+    with st.form("topic_form"):
+        topic = st.text_input("Video topic", placeholder="e.g. The Fall of the Vijayanagara Empire")
+        num_sources = st.slider("Number of Wikipedia articles to use", 1, 5, 3)
+        submitted = st.form_submit_button("Build research pack")
+
+    if submitted and topic.strip():
+        def build():
+            with st.spinner("Finding sources..."):
+                sources = gather_sources(topic, max_articles=num_sources)
+                if use_web:
+                    sources += search_web(topic)
+            if not sources:
+                raise ValueError("No sources found. Try different wording.")
+            with st.spinner(f"Reading {len(sources)} sources and building your pack..."):
+                return build_pack(topic, sources), sources
+
+        pack, sources = run_safely(build)
+        show_pack(topic, pack, sources)
+
+with check_tab:
+    with st.form("check_form"):
+        check_topic = st.text_input("Video topic (helps find the right sources)", placeholder="e.g. Maratha Empire")
+        script = st.text_area("Paste your script", height=250)
+        check_submitted = st.form_submit_button("Fact-check script")
+
+    if check_submitted and script.strip():
+        def check():
+            extra = []
+            if use_web:
+                with st.spinner("Searching trusted websites..."):
+                    extra = search_web(check_topic or script[:300])
+            with st.spinner("Splitting the script into claims and checking each one..."):
+                return fact_check(script, check_topic, extra_sources=extra)
+
+        show_factcheck(run_safely(check))

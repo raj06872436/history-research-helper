@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Literal
 
-import anthropic
+from google import genai
 from pydantic import BaseModel, Field
 
 from research.llm import ask, format_sources
@@ -70,7 +70,7 @@ verdict into quote, word for word, without changing or shortening it. Return one
 claim, in the same order as the claims."""
 
 
-def extract_claims(script: str, client: anthropic.Anthropic | None = None) -> list[Claim]:
+def extract_claims(script: str, client: genai.Client | None = None) -> list[Claim]:
     if not script.strip():
         raise ValueError("The script is empty.")
     return ask(EXTRACT_PROMPT, f"<script>\n{script}\n</script>", ClaimList, client).claims
@@ -106,7 +106,7 @@ def quote_in_source(quote: str, source: Source) -> bool:
 
 
 def check_claims(
-    claims: list[Claim], sources: list[Source], client: anthropic.Anthropic | None = None
+    claims: list[Claim], sources: list[Source], client: genai.Client | None = None
 ) -> list[CheckedClaim]:
     if not claims:
         return []
@@ -127,7 +127,7 @@ def check_claims(
 def fact_check(
     script: str,
     topic: str = "",
-    client: anthropic.Anthropic | None = None,
+    client: genai.Client | None = None,
     extra_sources: list[Source] | None = None,
 ) -> FactCheckResult:
     """Full pipeline: split the script into claims, find sources, check every claim."""
