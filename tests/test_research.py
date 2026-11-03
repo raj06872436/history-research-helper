@@ -92,3 +92,36 @@ def test_busy_model_falls_back_to_next(monkeypatch):
     client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
     assert build_pack("Topic", SOURCES, client=client) is PACK
     assert tried == [llm.DEFAULT_MODEL, llm.FALLBACK_MODELS[0]]
+
+
+def test_daily_limit_moves_to_next_model(monkeypatch):
+    from google.genai import errors
+
+    from research import llm
+
+    monkeypatch.delenv("GEMINI_MODEL", raising=False)
+    tried = []
+    daily = {"error": {"code": 429, "status": "RESOURCE_EXHAUSTED",
+                       "message": "quotaId: GenerateRequestsPerDayPerProjectPerModel-FreeTier"}}
+
+    def generate_content(model, **kwargs):
+        tried.append(model)
+        if len(tried) == 1:
+            raise errors.ClientError(429, daily)
+        candidate = SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))
+        return SimpleNamespace(parsed=PACK, candidates=[candidate])
+
+    client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
+    assert build_pack("Topic", SOURCES, client=client) is PACK
+    assert len(tried) == 2
+
+
+def test_bad_request_is_not_retried_on_other_models(monkeypatch):
+    from google.genai import errors
+
+    def generate_content(model, **kwargs):
+        raise errors.ClientError(400, {"error": {"code": 400, "message": "API key not valid", "status": "INVALID_ARGUMENT"}})
+
+    client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
+    with pytest.raises(errors.ClientError):
+        build_pack("Topic", SOURCES, client=client)

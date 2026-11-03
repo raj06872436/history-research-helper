@@ -72,6 +72,23 @@ topic / script → claims → Wikipedia (+ trusted sites) → Gemini, sources on
 - [x] Week 4: accuracy test set, to measure how many false claims it catches
 
 ## Measuring accuracy (Week 4)
+
+**Latest result (3 Nov 2026, Gemini Flash, free tier): 92% accurate**
+
+| | Score |
+|---|---|
+| True claims confirmed | 18/20 |
+| False claims caught | 16/17 |
+| False claims wrongly marked true | **0** |
+| Quotes found word for word in the source | 35/35 |
+
+[Full report](evals/results/20261103-180711.md)
+
+What the 3 misses were:
+- **"Hampi was the capital" → contradicted.** The sources name the capital city *Vijayanagara*, whose ruins are at Hampi, so this is partly a wording problem.
+- **"Third Battle of Panipat... 1761" → no source found.** The right article wasn't fetched for this topic.
+- **"Great Wall visible from the Moon" → no source found.** It wasn't marked true, but it wasn't caught as a myth either.
+
 `evals/claims.json` has 37 claims across 6 topics. I already know which are true (20) and which are false (17). To score the fact-checker, run:
 ```bash
 python -m evals.run_eval

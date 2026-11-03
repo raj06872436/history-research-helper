@@ -10,7 +10,7 @@ from google.genai import errors
 
 from research.export import VERDICT_LABELS, factcheck_to_markdown, to_markdown
 from research.factcheck import FactCheckResult, fact_check
-from research.llm import has_api_key
+from research.llm import has_api_key, is_daily_limit
 from research.pack import ResearchPack, build_pack
 from research.sources import Source, gather_sources
 from research.web_sources import TRUSTED_DOMAINS, search_web
@@ -43,8 +43,10 @@ def run_safely(task):
     try:
         return task()
     except errors.ClientError as err:
-        if err.code == 429:
-            st.error("You've hit the free tier's limit. Wait a minute (or until tomorrow for the daily limit) and try again.")
+        if err.code == 429 and is_daily_limit(err):
+            st.error("Today's free Gemini requests are used up on every model. They reset tomorrow.")
+        elif err.code == 429:
+            st.error("Too many requests in one minute for the free tier. Wait a minute and try again.")
         elif err.code in (400, 401, 403) and "key" in str(err).lower():
             st.error("Your Gemini API key is wrong. Check the key in your .env file.")
         else:

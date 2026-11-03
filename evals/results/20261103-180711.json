@@ -1,0 +1,274 @@
+{
+  "model": "gemini-flash-latest",
+  "scores": {
+    "accuracy": 0.918918918918919,
+    "true_confirmed": 18,
+    "true_total": 20,
+    "false_caught": 16,
+    "false_total": 17,
+    "false_marked_supported": 0,
+    "quotes_verified": 35,
+    "quotes_total": 35
+  },
+  "rows": [
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "The Vijayanagara Empire was founded in 1336.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "Harihara I and Bukka Raya I founded the Vijayanagara Empire.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "The Battle of Talikota was fought in 1565.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "Hampi was the capital of the Vijayanagara Empire.",
+      "is_true": true,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "Krishnadevaraya began his rule in 1509.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "The Vijayanagara Empire was founded by Shivaji.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "The Battle of Talikota was fought in 1665.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Vijayanagara Empire",
+      "claim": "Delhi was the capital of the Vijayanagara Empire.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "Shivaji was crowned at Raigad Fort in 1674.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "Shivaji was born at Shivneri Fort.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "Afzal Khan was killed at Pratapgad in 1659.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "The Third Battle of Panipat was fought in 1761 against Ahmad Shah Durrani.",
+      "is_true": true,
+      "verdict": "not_found",
+      "quote_verified": false
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "Shivaji was crowned in 1774.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "The Marathas won the Third Battle of Panipat.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Shivaji and the Maratha Empire",
+      "claim": "Shivaji was born in Delhi.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "Augustus was the first Roman emperor.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "The Western Roman Empire is conventionally said to have ended in 476 AD.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "Constantine the Great founded Constantinople as a new capital.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "Julius Caesar was the first Roman emperor.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "The Western Roman Empire fell in 1066.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Roman Empire",
+      "claim": "Rome was the capital of the Eastern Roman Empire.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Great Wall of China",
+      "claim": "Most of the Great Wall that survives today was built during the Ming dynasty.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Great Wall of China",
+      "claim": "Qin Shi Huang joined earlier walls together into a single defensive system.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Great Wall of China",
+      "claim": "The Great Wall of China is visible from the Moon with the naked eye.",
+      "is_true": false,
+      "verdict": "not_found",
+      "quote_verified": false
+    },
+    {
+      "topic": "Great Wall of China",
+      "claim": "The entire Great Wall was built within a single decade.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Babur founded the Mughal Empire after the First Battle of Panipat in 1526.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Shah Jahan commissioned the Taj Mahal.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Akbar ruled from 1556 to 1605.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Akbar commissioned the Taj Mahal.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Babur founded the Mughal Empire in 1626.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Mughal Empire",
+      "claim": "Aurangzeb was the founder of the Mughal Empire.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon was defeated at the Battle of Waterloo in 1815.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon was exiled to the island of Saint Helena.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon was born in Corsica.",
+      "is_true": true,
+      "verdict": "supported",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon won the Battle of Waterloo.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon was born in Paris.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    },
+    {
+      "topic": "Napoleon",
+      "claim": "Napoleon was exiled to Australia.",
+      "is_true": false,
+      "verdict": "contradicted",
+      "quote_verified": true
+    }
+  ]
+}
