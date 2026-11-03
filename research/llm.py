@@ -6,7 +6,7 @@ import os
 from typing import TypeVar
 
 from google import genai
-from google.genai import types
+from google.genai import errors, types
 from pydantic import BaseModel
 
 from research.sources import Source
@@ -15,8 +15,11 @@ from research.sources import Source
 # the app keeps working when Google retires old model versions. Override with GEMINI_MODEL in .env.
 DEFAULT_MODEL = "gemini-flash-latest"
 
+# If the main model is overloaded, these are tried next, in order (all on the free tier).
+FALLBACK_MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"]
+
 # Retry when Google is busy (503), has a hiccup (500) or the per-minute free limit is hit (429).
-RETRY = types.HttpRetryOptions(attempts=5, initial_delay=2, max_delay=30, http_status_codes=[429, 500, 503])
+RETRY = types.HttpRetryOptions(attempts=3, initial_delay=2, max_delay=20, http_status_codes=[429, 500, 503])
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -25,6 +28,11 @@ BLOCKED_REASONS = {"SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITAT
 
 def model_name() -> str:
     return os.environ.get("GEMINI_MODEL", DEFAULT_MODEL)
+
+
+def models_to_try() -> list[str]:
+    first = model_name()
+    return [first] + [m for m in FALLBACK_MODELS if m != first]
 
 
 def has_api_key() -> bool:
@@ -50,13 +58,27 @@ def finish_reason(response) -> str:
     return getattr(reason, "name", str(reason))
 
 
+def generate(client: genai.Client, contents: str, config: types.GenerateContentConfig):
+    """Call Gemini, moving on to the next model if one stays overloaded after its retries."""
+    for model in models_to_try():
+        try:
+            return client.models.generate_content(model=model, contents=contents, config=config)
+        except errors.ServerError as err:
+            last_error = err
+        except errors.ClientError as err:
+            if err.code != 404:  # 404: this model was retired, so try the next one
+                raise
+            last_error = err
+    raise last_error
+
+
 def ask(system: str, content: str, output_format: type[T], client: genai.Client | None = None) -> T:
     """Send one request to Gemini and get back a validated object of the given type."""
     client = client or make_client()
-    response = client.models.generate_content(
-        model=model_name(),
-        contents=content,
-        config=types.GenerateContentConfig(
+    response = generate(
+        client,
+        content,
+        types.GenerateContentConfig(
             system_instruction=system,
             response_mime_type="application/json",
             response_schema=output_format,
