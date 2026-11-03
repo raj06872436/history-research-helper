@@ -1,0 +1,51 @@
+{
+  "Vijayanagara Empire": [
+    {"claim": "The Vijayanagara Empire was founded in 1336.", "true": true},
+    {"claim": "Harihara I and Bukka Raya I founded the Vijayanagara Empire.", "true": true},
+    {"claim": "The Battle of Talikota was fought in 1565.", "true": true},
+    {"claim": "Hampi was the capital of the Vijayanagara Empire.", "true": true},
+    {"claim": "Krishnadevaraya began his rule in 1509.", "true": true},
+    {"claim": "The Vijayanagara Empire was founded by Shivaji.", "true": false},
+    {"claim": "The Battle of Talikota was fought in 1665.", "true": false},
+    {"claim": "Delhi was the capital of the Vijayanagara Empire.", "true": false}
+  ],
+  "Shivaji and the Maratha Empire": [
+    {"claim": "Shivaji was crowned at Raigad Fort in 1674.", "true": true},
+    {"claim": "Shivaji was born at Shivneri Fort.", "true": true},
+    {"claim": "Afzal Khan was killed at Pratapgad in 1659.", "true": true},
+    {"claim": "The Third Battle of Panipat was fought in 1761 against Ahmad Shah Durrani.", "true": true},
+    {"claim": "Shivaji was crowned in 1774.", "true": false},
+    {"claim": "The Marathas won the Third Battle of Panipat.", "true": false},
+    {"claim": "Shivaji was born in Delhi.", "true": false}
+  ],
+  "Roman Empire": [
+    {"claim": "Augustus was the first Roman emperor.", "true": true},
+    {"claim": "The Western Roman Empire is conventionally said to have ended in 476 AD.", "true": true},
+    {"claim": "Constantine the Great founded Constantinople as a new capital.", "true": true},
+    {"claim": "Julius Caesar was the first Roman emperor.", "true": false},
+    {"claim": "The Western Roman Empire fell in 1066.", "true": false},
+    {"claim": "Rome was the capital of the Eastern Roman Empire.", "true": false}
+  ],
+  "Great Wall of China": [
+    {"claim": "Most of the Great Wall that survives today was built during the Ming dynasty.", "true": true},
+    {"claim": "Qin Shi Huang joined earlier walls together into a single defensive system.", "true": true},
+    {"claim": "The Great Wall of China is visible from the Moon with the naked eye.", "true": false},
+    {"claim": "The entire Great Wall was built within a single decade.", "true": false}
+  ],
+  "Mughal Empire": [
+    {"claim": "Babur founded the Mughal Empire after the First Battle of Panipat in 1526.", "true": true},
+    {"claim": "Shah Jahan commissioned the Taj Mahal.", "true": true},
+    {"claim": "Akbar ruled from 1556 to 1605.", "true": true},
+    {"claim": "Akbar commissioned the Taj Mahal.", "true": false},
+    {"claim": "Babur founded the Mughal Empire in 1626.", "true": false},
+    {"claim": "Aurangzeb was the founder of the Mughal Empire.", "true": false}
+  ],
+  "Napoleon": [
+    {"claim": "Napoleon was defeated at the Battle of Waterloo in 1815.", "true": true},
+    {"claim": "Napoleon was exiled to the island of Saint Helena.", "true": true},
+    {"claim": "Napoleon was born in Corsica.", "true": true},
+    {"claim": "Napoleon won the Battle of Waterloo.", "true": false},
+    {"claim": "Napoleon was born in Paris.", "true": false},
+    {"claim": "Napoleon was exiled to Australia.", "true": false}
+  ]
+}

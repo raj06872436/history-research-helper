@@ -53,6 +53,8 @@ def run_safely(task):
         st.error("Gemini is busy right now. Try again in a minute.")
     except requests.ConnectionError:
         st.error("Couldn't connect. Check your internet connection.")
+    except requests.HTTPError:
+        st.error("Wikipedia is busy right now. Wait a minute and try again.")
     except (ValueError, RuntimeError) as err:
         st.error(str(err))
     st.stop()
