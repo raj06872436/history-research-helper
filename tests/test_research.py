@@ -72,3 +72,23 @@ def test_markdown_export_lists_sources():
     md = to_markdown("Fall of Vijayanagara", PACK, SOURCES)
     assert "**1565**: Battle of Talikota [1]" in md
     assert "1. Battle of Talikota: https://en.wikipedia.org/wiki/Battle_of_Talikota" in md
+
+
+def test_busy_model_falls_back_to_next(monkeypatch):
+    from google.genai import errors
+
+    from research import llm
+
+    monkeypatch.delenv("GEMINI_MODEL", raising=False)
+    tried = []
+
+    def generate_content(model, **kwargs):
+        tried.append(model)
+        if len(tried) == 1:
+            raise errors.ServerError(503, {"error": {"code": 503, "message": "busy", "status": "UNAVAILABLE"}})
+        candidate = SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))
+        return SimpleNamespace(parsed=PACK, candidates=[candidate])
+
+    client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
+    assert build_pack("Topic", SOURCES, client=client) is PACK
+    assert tried == [llm.DEFAULT_MODEL, llm.FALLBACK_MODELS[0]]
