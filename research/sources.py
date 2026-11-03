@@ -8,15 +8,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
 import requests
 
 API_URL = "https://en.wikipedia.org/w/api.php"
-# Wikipedia asks every tool to identify itself with a User-Agent.
-HEADERS = {"User-Agent": "HistoryResearchHelper/0.1 (educational project)"}
+# Wikipedia asks every tool to identify itself with a User-Agent that says where it comes from.
+HEADERS = {"User-Agent": "HistoryResearchHelper/0.1 (https://github.com/raj06872436/history-research-helper)"}
 CACHE_DIR = Path(".cache")
+MAX_ATTEMPTS = 4
 
 
 @dataclass
@@ -34,7 +36,13 @@ def _get(params: dict) -> dict:
     if cache_file.exists():
         return json.loads(cache_file.read_text(encoding="utf-8"))
 
-    response = requests.get(API_URL, params=params, headers=HEADERS, timeout=20)
+    for attempt in range(MAX_ATTEMPTS):
+        response = requests.get(API_URL, params=params, headers=HEADERS, timeout=20)
+        if response.status_code != 429 or attempt == MAX_ATTEMPTS - 1:
+            break
+        # Too many requests: wait as long as Wikipedia asks (or a growing pause), then retry.
+        retry_after = response.headers.get("Retry-After", "")
+        time.sleep(float(retry_after) if retry_after.isdigit() else 2 ** (attempt + 1))
     response.raise_for_status()
     data = response.json()
 
