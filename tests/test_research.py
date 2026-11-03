@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from app import to_markdown
+from research.export import to_markdown
 from research.llm import format_sources
 from research.pack import KeyFigure, ResearchPack, TimelineEvent, build_pack
 from research.sources import Source
@@ -24,18 +24,20 @@ PACK = ResearchPack(
 )
 
 
-class FakeMessages:
-    def __init__(self, stop_reason="end_turn"):
-        self.stop_reason = stop_reason
+class FakeModels:
+    def __init__(self, parsed=PACK, finish_reason="STOP"):
+        self.parsed = parsed
+        self.finish_reason = finish_reason
         self.last_request = None
 
-    def parse(self, **kwargs):
+    def generate_content(self, **kwargs):
         self.last_request = kwargs
-        return SimpleNamespace(stop_reason=self.stop_reason, parsed_output=PACK)
+        candidate = SimpleNamespace(finish_reason=SimpleNamespace(name=self.finish_reason))
+        return SimpleNamespace(parsed=self.parsed, candidates=[candidate])
 
 
-def fake_client(stop_reason="end_turn"):
-    return SimpleNamespace(beta=SimpleNamespace(messages=FakeMessages(stop_reason)))
+def fake_client(parsed=PACK, finish_reason="STOP"):
+    return SimpleNamespace(models=FakeModels(parsed, finish_reason))
 
 
 def test_sources_are_numbered_from_one():
@@ -48,7 +50,9 @@ def test_build_pack_sends_sources_and_topic():
     client = fake_client()
     pack = build_pack("Fall of Vijayanagara", SOURCES, client=client)
     assert pack is PACK
-    prompt = client.beta.messages.last_request["messages"][0]["content"]
+    request = client.models.last_request
+    assert request["config"].response_schema is ResearchPack
+    prompt = request["contents"]
     assert "Founded c. 1336." in prompt
     assert prompt.endswith("Video topic: Fall of Vijayanagara")
 
@@ -58,10 +62,10 @@ def test_build_pack_needs_sources():
         build_pack("Anything", [], client=fake_client())
 
 
-@pytest.mark.parametrize("stop_reason", ["refusal", "max_tokens"])
-def test_build_pack_reports_unusable_responses(stop_reason):
+@pytest.mark.parametrize("finish_reason", ["SAFETY", "MAX_TOKENS", "STOP"])
+def test_build_pack_reports_unusable_responses(finish_reason):
     with pytest.raises(RuntimeError):
-        build_pack("Anything", SOURCES, client=fake_client(stop_reason))
+        build_pack("Anything", SOURCES, client=fake_client(parsed=None, finish_reason=finish_reason))
 
 
 def test_markdown_export_lists_sources():
