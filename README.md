@@ -62,7 +62,7 @@ topic / script → claims → Wikipedia (+ trusted sites) → Gemini, sources on
 | `research/pack.py` | Builds the research pack |
 | `research/factcheck.py` | Splits scripts into claims, checks them and verifies quotes |
 | `research/export.py` | Markdown downloads |
-| `eval/` | Accuracy test: labelled true and false claims, plus a scorer |
+| `evals/` | Accuracy test: 37 labelled true and false claims, plus a scorer |
 | `app.py` | The Streamlit web interface |
 
 ## Roadmap
@@ -70,3 +70,19 @@ topic / script → claims → Wikipedia (+ trusted sites) → Gemini, sources on
 - [x] Week 2: paste a script and fact-check every claim
 - [x] Week 3: trusted websites and exact supporting quotes
 - [x] Week 4: accuracy test set, to measure how many false claims it catches
+
+## Measuring accuracy (Week 4)
+`evals/claims.json` has 37 claims across 6 topics. I already know which are true (20) and which are false (17). To score the fact-checker, run:
+```bash
+python -m evals.run_eval
+```
+- This uses 6 Gemini requests, which is free.
+- It prints a report and saves it to `evals/results/`.
+- If you change a prompt, run it again and compare the scores.
+- Add your own claims to `claims.json` from topics you cover.
+
+What the scores mean:
+- **True claims confirmed:** true claims marked ✅ supported.
+- **False claims caught:** false claims marked ❌ contradicted or ⚠️ disputed.
+- **False claims wrongly marked supported:** the worst kind of mistake. This should be 0.
+- **Quotes verified:** quotes found word for word in the source, which shows whether the AI is inventing evidence.
