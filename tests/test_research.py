@@ -5,7 +5,8 @@ from types import SimpleNamespace
 import pytest
 
 from app import to_markdown
-from research.pack import KeyFigure, ResearchPack, TimelineEvent, build_pack, format_sources
+from research.llm import format_sources
+from research.pack import KeyFigure, ResearchPack, TimelineEvent, build_pack
 from research.sources import Source
 
 SOURCES = [
