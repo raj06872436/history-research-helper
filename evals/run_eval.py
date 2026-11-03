@@ -113,11 +113,20 @@ def main() -> None:
             time.sleep(args.delay)
         print(f"Checking {len(labelled)} claims about {topic}...")
         claims = [Claim(text=item["claim"], search_query=item["claim"]) for item in labelled]
-        sources = gather_for_claims(topic, claims)
-        rows += rows_for_topic(topic, labelled, check_claims(claims, sources))
+        try:
+            sources = gather_for_claims(topic, claims)
+            rows += rows_for_topic(topic, labelled, check_claims(claims, sources))
+        except Exception as err:  # e.g. the free daily limit; keep what we have so far
+            print(f"\nStopped early at {topic}: {str(err)[:200]}")
+            break
+
+    if not rows:
+        raise SystemExit("No topics finished, so there is nothing to score. Try again later.")
 
     scores = score(rows)
     text = report(rows, scores)
+    if len(rows) < sum(len(v) for v in data.values()):
+        text = text.replace("\n\n", f"\n\n*Partial run: {len(rows)} claims checked before stopping.*\n\n", 1)
     print("\n" + text)
 
     out_dir = EVAL_DIR / "results"

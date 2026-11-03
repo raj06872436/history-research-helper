@@ -58,6 +58,10 @@ def finish_reason(response) -> str:
     return getattr(reason, "name", str(reason))
 
 
+def is_daily_limit(err: errors.ClientError) -> bool:
+    return "perday" in str(err).lower().replace(" ", "")
+
+
 def generate(client: genai.Client, contents: str, config: types.GenerateContentConfig):
     """Call Gemini, moving on to the next model if one stays overloaded after its retries."""
     for model in models_to_try():
@@ -66,7 +70,9 @@ def generate(client: genai.Client, contents: str, config: types.GenerateContentC
         except errors.ServerError as err:
             last_error = err
         except errors.ClientError as err:
-            if err.code != 404:  # 404: this model was retired, so try the next one
+            # 404: this model was retired. Daily 429: this model's free allowance is used up,
+            # but each model has its own allowance, so the next one may still work.
+            if not (err.code == 404 or (err.code == 429 and is_daily_limit(err))):
                 raise
             last_error = err
     raise last_error
