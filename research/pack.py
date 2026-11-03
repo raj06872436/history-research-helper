@@ -1,8 +1,8 @@
-"""Turn source articles into a research pack using Claude."""
+"""Turn source articles into a research pack using AI (Google Gemini)."""
 
 from __future__ import annotations
 
-import anthropic
+from google import genai
 from pydantic import BaseModel, Field
 
 from research.llm import ask, format_sources
@@ -47,8 +47,8 @@ instead of picking one answer. Only list a myth if the sources clearly contradic
 list is fine. Keep the language simple and clear for a general audience."""
 
 
-def build_pack(topic: str, sources: list[Source], client: anthropic.Anthropic | None = None) -> ResearchPack:
-    """Ask Claude to build a research pack for a topic from the given sources."""
+def build_pack(topic: str, sources: list[Source], client: genai.Client | None = None) -> ResearchPack:
+    """Ask the AI to build a research pack for a topic from the given sources."""
     if not sources:
         raise ValueError("No sources found for this topic. Try a different wording.")
 
