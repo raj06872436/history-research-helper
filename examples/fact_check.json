@@ -1,0 +1,97 @@
+{
+  "script": "The Vijayanagara Empire was founded in 1336 by the brothers Harihara and Bukka. At its height under Krishnadevaraya, its capital Hampi was one of the richest cities in the world. But in 1665, at the Battle of Talikota, an alliance of Deccan sultanates crushed its army. Rama Raya, who led the empire's forces, was captured and executed on the battlefield. The victors then looted the capital for six months, and the city was never rebuilt. Some say the empire's army had over a million soldiers.",
+  "sources": [
+    {
+      "title": "Vijayanagara Empire",
+      "url": "https://en.wikipedia.org/wiki/Vijayanagara_Empire"
+    },
+    {
+      "title": "Vijayanagara",
+      "url": "https://en.wikipedia.org/wiki/Vijayanagara"
+    },
+    {
+      "title": "Origin of the Vijayanagara Empire",
+      "url": "https://en.wikipedia.org/wiki/Origin_of_the_Vijayanagara_Empire"
+    },
+    {
+      "title": "Battle of Talikota",
+      "url": "https://en.wikipedia.org/wiki/Battle_of_Talikota"
+    },
+    {
+      "title": "Rama Raya",
+      "url": "https://en.wikipedia.org/wiki/Rama_Raya"
+    },
+    {
+      "title": "Hampi",
+      "url": "https://en.wikipedia.org/wiki/Hampi"
+    }
+  ],
+  "claims": [
+    {
+      "check": {
+        "claim": "The Vijayanagara Empire was founded in 1336 by the brothers Harihara and Bukka.",
+        "verdict": "supported",
+        "explanation": "The source explicitly states that the empire was established in 1336 by Harihara I and Bukka Raya I.",
+        "source_index": 1,
+        "quote": "It was established in 1336 by the brothers Harihara I and Bukka Raya I of the Sangama dynasty."
+      },
+      "source_index": 0,
+      "quote_verified": true
+    },
+    {
+      "check": {
+        "claim": "At its height under Krishnadevaraya, its capital Hampi was one of the richest cities in the world.",
+        "verdict": "supported",
+        "explanation": "The sources note that by 1500 CE, Hampi-Vijayanagara was probably India's richest city and among the world's largest/richest medieval cities.",
+        "source_index": 6,
+        "quote": "Hampi-Vijayanagara is estimated to be the world's second-largest city by 1500, after Beijing, and probably India's richest at that time, attracting traders from Persia and Portugal."
+      },
+      "source_index": 5,
+      "quote_verified": true
+    },
+    {
+      "check": {
+        "claim": "In 1665, at the Battle of Talikota, an alliance of Deccan sultanates crushed the Vijayanagara army.",
+        "verdict": "contradicted",
+        "explanation": "The Battle of Talikota took place in 1565, not 1665.",
+        "source_index": 4,
+        "quote": "The Battle of Talikota, also known as that of Rakshasi-Tangadi, (23 January 1565) was a watershed battle fought between the Vijayanagara Empire and an alliance of the Deccan sultanates."
+      },
+      "source_index": 3,
+      "quote_verified": true
+    },
+    {
+      "check": {
+        "claim": "Rama Raya led the forces of the Vijayanagara Empire.",
+        "verdict": "supported",
+        "explanation": "Source confirms Rama Raya led the defense in the Battle of Talikota.",
+        "source_index": 5,
+        "quote": "In 1565, it was Rama Raya, as the pre-eminent general of the Vijayanagar army, who led the defense against the invading army of Deccan Sultans (i.e. Husain Nizam Shah, Ali Adil Shah and Ibrahim Qutb Shah) in the battle of Talikota."
+      },
+      "source_index": 4,
+      "quote_verified": true
+    },
+    {
+      "check": {
+        "claim": "Rama Raya was captured and executed on the battlefield.",
+        "verdict": "supported",
+        "explanation": "Sources confirm Rama Raya was captured, beheaded, and killed during the battle.",
+        "source_index": 4,
+        "quote": "Rama Raya was eventually beheaded either by Sultan Nizam Hussain himself or by someone else acting on his behest despite Adil Shah, who had friendly relations with Raya, intending against."
+      },
+      "source_index": 3,
+      "quote_verified": true
+    },
+    {
+      "check": {
+        "claim": "The victors looted the capital for six months, and the city was never rebuilt.",
+        "verdict": "supported",
+        "explanation": "Sources state the capital was looted and burned for six months and remained in ruins, never being rebuilt.",
+        "source_index": 2,
+        "quote": "The conquered capital city of Vijayanagara was looted and destroyed for 6 months, after which it remained in ruins."
+      },
+      "source_index": 1,
+      "quote_verified": true
+    }
+  ]
+}
