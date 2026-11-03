@@ -14,7 +14,7 @@ import requests
 from google import genai
 from google.genai import types
 
-from research.llm import model_name
+from research.llm import make_client, model_name
 from research.sources import HEADERS, Source
 
 TRUSTED_DOMAINS = [
@@ -104,7 +104,7 @@ def found_pages(response) -> list[tuple[str, str, str]]:
 
 def search_web(topic: str, client: genai.Client | None = None, max_pages: int = 4) -> list[Source]:
     """Search the web for a topic and return the trusted pages it found, with their real text."""
-    client = client or genai.Client()
+    client = client or make_client()
     response = client.models.generate_content(
         model=model_name(),
         contents=SEARCH_PROMPT.format(topic=topic),

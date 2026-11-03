@@ -11,8 +11,12 @@ from pydantic import BaseModel
 
 from research.sources import Source
 
-# Free on Google AI Studio's free tier. Change it with GEMINI_MODEL in your .env file.
-DEFAULT_MODEL = "gemini-2.5-flash"
+# Google's alias for its newest Flash model, which is on the free tier. Using the alias means
+# the app keeps working when Google retires old model versions. Override with GEMINI_MODEL in .env.
+DEFAULT_MODEL = "gemini-flash-latest"
+
+# Retry when Google is busy (503), has a hiccup (500) or the per-minute free limit is hit (429).
+RETRY = types.HttpRetryOptions(attempts=5, initial_delay=2, max_delay=30, http_status_codes=[429, 500, 503])
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -25,6 +29,11 @@ def model_name() -> str:
 
 def has_api_key() -> bool:
     return bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
+
+
+def make_client() -> genai.Client:
+    """A Gemini client that reads GEMINI_API_KEY from the environment and retries busy errors."""
+    return genai.Client(http_options=types.HttpOptions(retry_options=RETRY))
 
 
 def format_sources(sources: list[Source]) -> str:
@@ -43,7 +52,7 @@ def finish_reason(response) -> str:
 
 def ask(system: str, content: str, output_format: type[T], client: genai.Client | None = None) -> T:
     """Send one request to Gemini and get back a validated object of the given type."""
-    client = client or genai.Client()  # reads GEMINI_API_KEY from the environment
+    client = client or make_client()
     response = client.models.generate_content(
         model=model_name(),
         contents=content,
