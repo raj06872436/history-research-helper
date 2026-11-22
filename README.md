@@ -1,3 +1,5 @@
+<p align="center"><a href="https://github.com/raj06872436"><img src=".github/cover.svg" width="100%" alt="History Research Helper" /></a></p>
+
 # 📜 History Research Helper
 
 A free research and fact-checking assistant for history and geography YouTube videos, powered by Google Gemini's free tier.
